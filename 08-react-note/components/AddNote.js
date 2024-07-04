@@ -8,6 +8,7 @@ export default function AddNote(props) {
     }
     const handleSave = () => {
         props.newnote(note)
+        setNote('')
         setAddState(false)
     }
     return (

@@ -2,17 +2,42 @@
 import Navi from "@/components/Navi"
 import Note from "@/components/Note"
 import AddNote from "@/components/AddNote"
+import { useState, useEffect } from 'react'
 
 export default function Notes() {
 
+    const [notes, setNotes] = useState([])
+    useEffect(() => {
+        fetch('/api/notes')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setNotes(data)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+    }, [])
 
-    const notes = [
-        { id: 1, text: 'eine Notiz' },
-        { id: 2, text: 'zweite Notiz' },
-        { id: 3, text: 'dritte Notiz' }
-    ]
-    const newNote = (note) => {
-        notes.push(note)
+
+
+    const newNote = (text) => {
+
+        fetch('/api/notes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: text })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setNotes(data)
+            })
+            .catch(e => {
+                console.log(e)
+            })
 
     }
     return (
